@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "ai-chat-group": {
+      "command": "python",
+      "args": [
+        "D:/developItems/mcp_ai_chat/server.py"
+      ],
+      "env": {
+        "MCP_AI_CHAT_AGENT_NAME": "manager"
+      }
+    }
+  }
+}
+
+

@@ -1,0 +1,243 @@
+name: Deploy Pipeline
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  # 构建和测试
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_db
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Docker Buildx
+      uses: docker/setup-buildx-action@v3
+    
+    - name: Log in to Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Extract metadata
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+          type=semver,pattern={{version}}
+          type=semver,pattern={{major}}.{{minor}}
+          type=sha,prefix={{branch}}-
+    
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+    
+    - name: Run tests
+      run: |
+        # 运行所有测试
+        npm run test:run
+        pytest tests/
+    
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: docker-image
+        path: |
+          Dockerfile
+          docker-compose.yml
+        retention-days: 30
+
+  # 部署到测试环境
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    environment: staging
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Deploy to staging
+      run: |
+        echo "Deploying to staging environment..."
+        # 这里添加实际的部署脚本
+        # 例如：ssh部署、k8s部署、serverless部署等
+        echo "Staging deployment completed"
+      env:
+        STAGING_HOST: ${{ secrets.STAGING_HOST }}
+        STAGING_USER: ${{ secrets.STAGING_USER }}
+        STAGING_KEY: ${{ secrets.STAGING_KEY }}
+    
+    - name: Run staging tests
+      run: |
+        echo "Running staging environment tests..."
+        # 在staging环境运行冒烟测试
+        npm run test:e2e -- --base-url=${{ secrets.STAGING_URL }}
+    
+    - name: Notify staging deployment
+      uses: 8398a7/action-slack@v3
+      with:
+        status: custom
+        custom_payload: |
+          {
+            "text": "🚀 Staging deployment completed",
+            "attachments": [{
+              "color": "#36a64f",
+              "fields": [
+                {
+                  "title": "Environment",
+                  "value": "Staging",
+                  "short": true
+                },
+                {
+                  "title": "Commit",
+                  "value": "${{ github.sha }}",
+                  "short": true
+                }
+              ]
+            }]
+          }
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  # 部署到生产环境（手动触发）
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: deploy-staging
+    environment: production
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Wait for approval
+      run: echo "Waiting for manual approval..."
+    
+    - name: Deploy to production
+      run: |
+        echo "Deploying to production environment..."
+        # 这里添加实际的生产部署脚本
+        # 确保有回滚机制
+        echo "Production deployment completed"
+      env:
+        PRODUCTION_HOST: ${{ secrets.PRODUCTION_HOST }}
+        PRODUCTION_USER: ${{ secrets.PRODUCTION_USER }}
+        PRODUCTION_KEY: ${{ secrets.PRODUCTION_KEY }}
+    
+    - name: Run production tests
+      run: |
+        echo "Running production environment tests..."
+        # 在生产环境运行健康检查
+        curl -f ${{ secrets.PRODUCTION_URL }}/health || exit 1
+    
+    - name: Create release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref_name }}
+        release_name: Release ${{ github.ref_name }}
+        draft: false
+        prerelease: false
+    
+    - name: Notify production deployment
+      uses: 8398a7/action-slack@v3
+      with:
+        status: custom
+        custom_payload: |
+          {
+            "text": "🎉 Production deployment completed!",
+            "attachments": [{
+              "color": "#ff9900",
+              "fields": [
+                {
+                  "title": "Environment",
+                  "value": "Production",
+                  "short": true
+                },
+                {
+                  "title": "Release",
+                  "value": "${{ github.ref_name }}",
+                  "short": true
+                }
+              ]
+            }]
+          }
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  # 监控和告警
+  monitoring:
+    name: Monitoring
+    runs-on: ubuntu-latest
+    needs: deploy-production
+    if: always()
+    
+    steps:
+    - name: Setup monitoring
+      run: |
+        echo "Setting up monitoring for deployment..."
+        # 配置监控告警
+        # 例如：设置uptime监控、错误追踪等
+    
+    - name: Send deployment metrics
+      run: |
+        echo "Sending deployment metrics to monitoring system..."
+        # 发送部署指标到监控系统
+
+  # 清理
+  cleanup:
+    name: Cleanup
+    runs-on: ubuntu-latest
+    needs: monitoring
+    if: always()
+    
+    steps:
+    - name: Cleanup resources
+      run: |
+        echo "Cleaning up temporary resources..."
+        # 清理临时文件、缓存等
+    
+    - name: Archive logs
+      uses: actions/upload-artifact@v3
+      with:
+        name: deployment-logs
+        path: |
+          ${{ github.workspace }}/logs
+        retention-days: 7
