@@ -68,7 +68,7 @@ jobs:
         npm run test:run -- --reporter=junit --outputFile=junit-frontend.xml
     
     - name: Upload backend test results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: backend-test-results-${{ matrix.python-version }}
         path: |
@@ -77,7 +77,7 @@ jobs:
         retention-days: 30
     
     - name: Upload frontend test results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: frontend-test-results-${{ matrix.node-version }}
         path: junit-frontend.xml
@@ -161,7 +161,7 @@ jobs:
         pytest tests/integration/ -v --junitxml=junit-integration.xml
     
     - name: Upload integration test results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: integration-test-results
         path: junit-integration.xml
@@ -228,7 +228,7 @@ jobs:
         API_BASE_URL: http://localhost:8000
     
     - name: Upload E2E test results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: e2e-test-results
         path: |
@@ -269,7 +269,7 @@ jobs:
         configPath: './lighthouserc.js'
     
     - name: Upload performance results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: performance-test-results
         path: .lighthouseci/
@@ -305,7 +305,7 @@ jobs:
         echo "### Performance Tests: ${{ needs.performance-tests.result }}" >> test-summary.md
     
     - name: Upload test summary
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: test-summary
         path: test-summary.md

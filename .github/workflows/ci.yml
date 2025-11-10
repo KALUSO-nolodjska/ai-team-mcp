@@ -140,7 +140,7 @@ jobs:
         BASE_URL: http://localhost:3000
     
     - name: Upload E2E test results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: playwright-report
@@ -169,7 +169,7 @@ jobs:
       run: npm run build || echo "No build script configured"
     
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: build-artifacts
         path: |
