@@ -1,0 +1,21 @@
+# MCP AI Chat 依赖包
+# 用于GitHub Actions CI/CD
+
+# Core dependencies
+annotated-types==0.7.0
+pydantic==2.11.9
+pydantic_core==2.33.2
+typing_extensions==4.15.0
+python-dateutil==2.9.0.post0
+
+# Testing dependencies  
+pytest>=7.4.0
+pytest-cov>=4.1.0
+pytest-asyncio>=0.21.0
+
+# Linting and code quality
+flake8>=6.0.0
+black>=23.0.0
+mypy>=1.5.0
+
+
