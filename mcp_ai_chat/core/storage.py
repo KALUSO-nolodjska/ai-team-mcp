@@ -1,6 +1,7 @@
 """
 MCP AI Chat Group - 数据存储模块
 """
+
 import json
 from pathlib import Path
 from typing import Any, Optional
@@ -99,4 +100,3 @@ def load_employee_config() -> dict:
 def save_employee_config(config_data: dict) -> None:
     """保存员工配置"""
     save_json(config.EMPLOYEE_CONFIG_FILE, config_data)
-

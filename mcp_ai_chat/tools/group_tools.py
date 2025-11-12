@@ -2,6 +2,7 @@
 MCP AI Chat Group - 群组管理工具定义
 Group Management Tools Definitions
 """
+
 from mcp.types import Tool
 
 
@@ -16,20 +17,17 @@ def get_group_tools():
                 "properties": {
                     "name": {
                         "type": "string",
-                        "description": "群组名称（例如：知识库本地文件夹挂载项目）"
+                        "description": "群组名称（例如：知识库本地文件夹挂载项目）",
                     },
-                    "description": {
-                        "type": "string",
-                        "description": "群组描述"
-                    },
+                    "description": {"type": "string", "description": "群组描述"},
                     "members": {
                         "type": "array",
                         "items": {"type": "string"},
-                        "description": "群组成员列表（例如：[\"manager\", \"a\", \"b\", \"c\", \"d\"]）"
-                    }
+                        "description": '群组成员列表（例如：["manager", "a", "b", "c", "d"]）',
+                    },
                 },
-                "required": ["name", "members"]
-            }
+                "required": ["name", "members"],
+            },
         ),
         Tool(
             name="send_group_message",
@@ -37,39 +35,30 @@ def get_group_tools():
             inputSchema={
                 "type": "object",
                 "properties": {
-                    "group_id": {
-                        "type": "string",
-                        "description": "群组ID"
-                    },
-                    "message": {
-                        "type": "string",
-                        "description": "消息内容"
-                    },
+                    "group_id": {"type": "string", "description": "群组ID"},
+                    "message": {"type": "string", "description": "消息内容"},
                     "file_path": {
                         "type": "string",
-                        "description": "可选：要发送的文件路径"
+                        "description": "可选：要发送的文件路径",
                     },
                     "topic": {
                         "type": "string",
-                        "description": "可选：消息主题/话题，便于后续过滤"
+                        "description": "可选：消息主题/话题，便于后续过滤",
                     },
-                    "reply_to": {
-                        "type": "string",
-                        "description": "可选：回复的消息ID"
-                    },
+                    "reply_to": {"type": "string", "description": "可选：回复的消息ID"},
                     "mentions": {
                         "type": "array",
                         "items": {"type": "string"},
-                        "description": "可选：@提醒的成员列表，例如：[\"a\", \"b\"]"
+                        "description": '可选：@提醒的成员列表，例如：["a", "b"]',
                     },
                     "importance": {
                         "type": "string",
                         "enum": ["low", "normal", "high"],
-                        "description": "可选：消息重要性（low/normal/high），默认normal"
-                    }
+                        "description": "可选：消息重要性（low/normal/high），默认normal",
+                    },
                 },
-                "required": ["group_id", "message"]
-            }
+                "required": ["group_id", "message"],
+            },
         ),
         Tool(
             name="receive_group_messages",
@@ -77,56 +66,53 @@ def get_group_tools():
             inputSchema={
                 "type": "object",
                 "properties": {
-                    "group_id": {
-                        "type": "string",
-                        "description": "群组ID"
-                    },
+                    "group_id": {"type": "string", "description": "群组ID"},
                     "limit": {
                         "type": "integer",
                         "description": "返回消息数量限制（默认：20，建议不超过50）",
-                        "default": 20
+                        "default": 20,
                     },
                     "unread_only": {
                         "type": "boolean",
                         "description": "是否只返回未读消息（默认：false）",
-                        "default": False
+                        "default": False,
                     },
                     "since": {
                         "type": "string",
-                        "description": "时间过滤：只返回此时间之后的消息（ISO格式）"
+                        "description": "时间过滤：只返回此时间之后的消息（ISO格式）",
                     },
                     "keywords": {
                         "type": "array",
                         "items": {"type": "string"},
-                        "description": "关键词过滤：只返回包含这些关键词的消息"
+                        "description": "关键词过滤：只返回包含这些关键词的消息",
                     },
                     "topic": {
                         "type": "string",
-                        "description": "话题过滤：只返回指定话题的消息"
+                        "description": "话题过滤：只返回指定话题的消息",
                     },
                     "mentions_me": {
                         "type": "boolean",
                         "description": "只显示@我的消息（默认：false）",
-                        "default": False
+                        "default": False,
                     },
                     "importance": {
                         "type": "string",
                         "enum": ["low", "normal", "high"],
-                        "description": "重要性过滤：只显示指定重要性的消息"
+                        "description": "重要性过滤：只显示指定重要性的消息",
                     },
                     "show_pinned": {
                         "type": "boolean",
                         "description": "优先显示置顶消息（默认：false）",
-                        "default": False
+                        "default": False,
                     },
                     "max_content_length": {
                         "type": "integer",
                         "description": "单条消息内容最大长度（字符数），默认：5000",
-                        "default": 5000
-                    }
+                        "default": 5000,
+                    },
                 },
-                "required": ["group_id"]
-            }
+                "required": ["group_id"],
+            },
         ),
         Tool(
             name="list_groups",
@@ -136,49 +122,39 @@ def get_group_tools():
                 "properties": {
                     "member": {
                         "type": "string",
-                        "description": "可选：过滤：只列出包含此成员的群组"
+                        "description": "可选：过滤：只列出包含此成员的群组",
                     },
                     "status": {
                         "type": "string",
                         "enum": ["active", "archived", "all"],
                         "description": "可选：过滤群组状态（active/archived/all），默认active",
-                        "default": "active"
+                        "default": "active",
                     },
                     "include_preview": {
                         "type": "boolean",
                         "description": "可选：包含最新消息预览和未读统计，默认false",
-                        "default": False
-                    }
-                }
-            }
+                        "default": False,
+                    },
+                },
+            },
         ),
         Tool(
             name="join_group",
             description="加入群组",
             inputSchema={
                 "type": "object",
-                "properties": {
-                    "group_id": {
-                        "type": "string",
-                        "description": "群组ID"
-                    }
-                },
-                "required": ["group_id"]
-            }
+                "properties": {"group_id": {"type": "string", "description": "群组ID"}},
+                "required": ["group_id"],
+            },
         ),
         Tool(
             name="leave_group",
             description="离开群组",
             inputSchema={
                 "type": "object",
-                "properties": {
-                    "group_id": {
-                        "type": "string",
-                        "description": "群组ID"
-                    }
-                },
-                "required": ["group_id"]
-            }
+                "properties": {"group_id": {"type": "string", "description": "群组ID"}},
+                "required": ["group_id"],
+            },
         ),
         Tool(
             name="summarize_group_messages",
@@ -186,23 +162,20 @@ def get_group_tools():
             inputSchema={
                 "type": "object",
                 "properties": {
-                    "group_id": {
-                        "type": "string",
-                        "description": "群组ID"
-                    },
+                    "group_id": {"type": "string", "description": "群组ID"},
                     "time_range": {
                         "type": "string",
                         "description": "时间范围：last_24_hours, last_7_days, last_30_days, 或ISO时间格式",
-                        "default": "last_7_days"
+                        "default": "last_7_days",
                     },
                     "max_length": {
                         "type": "integer",
                         "description": "摘要最大长度（字符数），默认：500",
-                        "default": 500
-                    }
+                        "default": 500,
+                    },
                 },
-                "required": ["group_id"]
-            }
+                "required": ["group_id"],
+            },
         ),
         Tool(
             name="get_unread_counts",
@@ -213,10 +186,10 @@ def get_group_tools():
                     "groups": {
                         "type": "array",
                         "items": {"type": "string"},
-                        "description": "可选：要查询的群组ID列表，不传则查询所有群组"
+                        "description": "可选：要查询的群组ID列表，不传则查询所有群组",
                     }
-                }
-            }
+                },
+            },
         ),
         Tool(
             name="archive_group",
@@ -224,17 +197,11 @@ def get_group_tools():
             inputSchema={
                 "type": "object",
                 "properties": {
-                    "group_id": {
-                        "type": "string",
-                        "description": "群组ID"
-                    },
-                    "reason": {
-                        "type": "string",
-                        "description": "可选：归档原因"
-                    }
+                    "group_id": {"type": "string", "description": "群组ID"},
+                    "reason": {"type": "string", "description": "可选：归档原因"},
                 },
-                "required": ["group_id"]
-            }
+                "required": ["group_id"],
+            },
         ),
         Tool(
             name="pin_message",
@@ -242,17 +209,11 @@ def get_group_tools():
             inputSchema={
                 "type": "object",
                 "properties": {
-                    "group_id": {
-                        "type": "string",
-                        "description": "群组ID"
-                    },
-                    "message_id": {
-                        "type": "string",
-                        "description": "消息ID"
-                    }
+                    "group_id": {"type": "string", "description": "群组ID"},
+                    "message_id": {"type": "string", "description": "消息ID"},
                 },
-                "required": ["group_id", "message_id"]
-            }
+                "required": ["group_id", "message_id"],
+            },
         ),
         Tool(
             name="unpin_message",
@@ -260,19 +221,10 @@ def get_group_tools():
             inputSchema={
                 "type": "object",
                 "properties": {
-                    "group_id": {
-                        "type": "string",
-                        "description": "群组ID"
-                    },
-                    "message_id": {
-                        "type": "string",
-                        "description": "消息ID"
-                    }
+                    "group_id": {"type": "string", "description": "群组ID"},
+                    "message_id": {"type": "string", "description": "消息ID"},
                 },
-                "required": ["group_id", "message_id"]
-            }
-        )
+                "required": ["group_id", "message_id"],
+            },
+        ),
     ]
-
-
-

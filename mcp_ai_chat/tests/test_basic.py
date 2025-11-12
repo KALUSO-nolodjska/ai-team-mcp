@@ -25,7 +25,7 @@ def test_path_exists():
     """测试项目路径存在"""
     current_file = Path(__file__)
     assert current_file.exists(), "测试文件应该存在"
-    
+
     # 测试项目根目录
     project_root = current_file.parent.parent
     assert project_root.exists(), "项目根目录应该存在"
@@ -34,7 +34,8 @@ def test_path_exists():
 def test_import_pytest():
     """测试pytest模块可导入"""
     import pytest
-    assert hasattr(pytest, 'main'), "pytest应该有main函数"
+
+    assert hasattr(pytest, "main"), "pytest应该有main函数"
 
 
 def test_import_standard_lib():
@@ -42,7 +43,7 @@ def test_import_standard_lib():
     import json
     import os
     import sys
-    
+
     assert json is not None
     assert os is not None
     assert sys is not None
@@ -55,11 +56,14 @@ def test_basic_functionality():
     assert True is True
 
 
-@pytest.mark.parametrize("input,expected", [
-    (1, 1),
-    (2, 2),
-    (10, 10),
-])
+@pytest.mark.parametrize(
+    "input,expected",
+    [
+        (1, 1),
+        (2, 2),
+        (10, 10),
+    ],
+)
 def test_parametrized(input, expected):
     """参数化测试示例"""
     assert input == expected
@@ -67,11 +71,11 @@ def test_parametrized(input, expected):
 
 class TestBasicClass:
     """测试类示例"""
-    
+
     def test_method_1(self):
         """测试方法1"""
         assert True
-    
+
     def test_method_2(self):
         """测试方法2"""
         result = [1, 2, 3]
@@ -81,5 +85,3 @@ class TestBasicClass:
 
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])
-
-

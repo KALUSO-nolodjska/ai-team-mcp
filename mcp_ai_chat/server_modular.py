@@ -48,13 +48,13 @@ server = Server("ai-chat-group")
 async def list_tools():
     """
     列出所有可用工具
-    
+
     使用模块化的工具定义（tools/模块）
     - message_tools: 7个消息工具
     - task_tools: 5个任务工具
     - group_tools: 11个群组工具
     - system_tools: 5个系统工具
-    
+
     总计：28个工具
     """
     return get_all_tools()
@@ -64,18 +64,18 @@ async def list_tools():
 async def call_tool(name: str, arguments: dict):
     """
     处理工具调用
-    
+
     架构：使用handlers/模块的处理器
     - message_handler: 7个消息工具
     - task_handler: 5个任务工具
     - group_handler: 11个群组工具
     - system_handler: 5个系统工具
-    
+
     总计：28个工具，100%模块化
     """
     # 导入处理器路由
     from .handlers import handle_tool_call
-    
+
     # 调用对应的处理器
     return await handle_tool_call(name, arguments)
 
@@ -84,12 +84,9 @@ async def main():
     """主入口"""
     async with stdio_server() as (read_stream, write_stream):
         await server.run(
-            read_stream,
-            write_stream,
-            server.create_initialization_options()
+            read_stream, write_stream, server.create_initialization_options()
         )
 
 
 if __name__ == "__main__":
     asyncio.run(main())
-

@@ -2,6 +2,7 @@
 MCP AI Chat Group - 任务管理工具定义
 Task Management Tools Definitions
 """
+
 from mcp.types import Tool
 
 
@@ -14,26 +15,20 @@ def get_task_tools():
             inputSchema={
                 "type": "object",
                 "properties": {
-                    "title": {
-                        "type": "string",
-                        "description": "任务标题"
-                    },
-                    "description": {
-                        "type": "string",
-                        "description": "任务描述"
-                    },
+                    "title": {"type": "string", "description": "任务标题"},
+                    "description": {"type": "string", "description": "任务描述"},
                     "priority": {
                         "type": "string",
                         "description": "优先级：P0（紧急）、P1（重要）、P2（一般）",
-                        "enum": ["P0", "P1", "P2"]
+                        "enum": ["P0", "P1", "P2"],
                     },
                     "due_date": {
                         "type": "string",
-                        "description": "截止日期（ISO格式，可选）"
-                    }
+                        "description": "截止日期（ISO格式，可选）",
+                    },
                 },
-                "required": ["title", "description", "priority"]
-            }
+                "required": ["title", "description", "priority"],
+            },
         ),
         Tool(
             name="assign_task",
@@ -41,17 +36,14 @@ def get_task_tools():
             inputSchema={
                 "type": "object",
                 "properties": {
-                    "task_id": {
-                        "type": "string",
-                        "description": "任务ID"
-                    },
+                    "task_id": {"type": "string", "description": "任务ID"},
                     "assignee": {
                         "type": "string",
-                        "description": "分配给谁（例如: a, b, c, d）"
-                    }
+                        "description": "分配给谁（例如: a, b, c, d）",
+                    },
                 },
-                "required": ["task_id", "assignee"]
-            }
+                "required": ["task_id", "assignee"],
+            },
         ),
         Tool(
             name="update_task_status",
@@ -59,22 +51,19 @@ def get_task_tools():
             inputSchema={
                 "type": "object",
                 "properties": {
-                    "task_id": {
-                        "type": "string",
-                        "description": "任务ID"
-                    },
+                    "task_id": {"type": "string", "description": "任务ID"},
                     "status": {
                         "type": "string",
                         "description": "任务状态",
-                        "enum": ["待开始", "进行中", "已完成", "已阻塞", "已取消"]
+                        "enum": ["待开始", "进行中", "已完成", "已阻塞", "已取消"],
                     },
                     "progress_note": {
                         "type": "string",
-                        "description": "进度说明（可选）"
-                    }
+                        "description": "进度说明（可选）",
+                    },
                 },
-                "required": ["task_id", "status"]
-            }
+                "required": ["task_id", "status"],
+            },
         ),
         Tool(
             name="get_tasks",
@@ -84,18 +73,18 @@ def get_task_tools():
                 "properties": {
                     "assignee": {
                         "type": "string",
-                        "description": "过滤：分配给谁（可选，使用 '*' 获取所有任务，仅对manager有效）"
+                        "description": "过滤：分配给谁（可选，使用 '*' 获取所有任务，仅对manager有效）",
                     },
                     "status": {
                         "type": "string",
-                        "description": "过滤：任务状态（可选）"
+                        "description": "过滤：任务状态（可选）",
                     },
                     "priority": {
                         "type": "string",
-                        "description": "过滤：优先级（可选）"
-                    }
-                }
-            }
+                        "description": "过滤：优先级（可选）",
+                    },
+                },
+            },
         ),
         Tool(
             name="delete_task",
@@ -106,18 +95,15 @@ def get_task_tools():
                     "task_ids": {
                         "type": "array",
                         "items": {"type": "string"},
-                        "description": "任务ID列表"
+                        "description": "任务ID列表",
                     },
                     "permanent": {
                         "type": "boolean",
                         "description": "是否永久删除（默认为软删除，标记为已删除）",
-                        "default": False
-                    }
+                        "default": False,
+                    },
                 },
-                "required": ["task_ids"]
-            }
-        )
+                "required": ["task_ids"],
+            },
+        ),
     ]
-
-
-

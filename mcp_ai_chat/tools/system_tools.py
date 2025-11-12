@@ -2,6 +2,7 @@
 MCP AI Chat Group - 系统工具定义
 System Tools Definitions
 """
+
 from mcp.types import Tool
 
 
@@ -16,24 +17,24 @@ def get_system_tools():
                 "properties": {
                     "agent_name": {
                         "type": "string",
-                        "description": "AI代理名称（例如: a, b, c, d, manager）"
+                        "description": "AI代理名称（例如: a, b, c, d, manager）",
                     },
                     "role": {
                         "type": "string",
-                        "description": "AI角色（例如: 前端开发工程师、后端开发工程师、全栈开发工程师、测试/运维工程师、产品经理）。如果设置了员工配置，会自动从.mdc文件读取"
+                        "description": "AI角色（例如: 前端开发工程师、后端开发工程师、全栈开发工程师、测试/运维工程师、产品经理）。如果设置了员工配置，会自动从.mdc文件读取",
                     },
                     "description": {
                         "type": "string",
-                        "description": "AI代理描述。如果设置了员工配置，会自动从.mdc文件读取"
+                        "description": "AI代理描述。如果设置了员工配置，会自动从.mdc文件读取",
                     },
                     "auto_load_from_mdc": {
                         "type": "boolean",
                         "description": "是否自动从.mdc文件加载员工设定（默认：true）",
-                        "default": True
-                    }
+                        "default": True,
+                    },
                 },
-                "required": ["agent_name"]
-            }
+                "required": ["agent_name"],
+            },
         ),
         Tool(
             name="set_employee_config",
@@ -43,31 +44,25 @@ def get_system_tools():
                 "properties": {
                     "agent_name": {
                         "type": "string",
-                        "description": "AI代理名称（例如: a, b, c, d, manager）"
+                        "description": "AI代理名称（例如: a, b, c, d, manager）",
                     },
                     "mdc_file_path": {
                         "type": "string",
-                        "description": ".mdc文件路径（相对于工作区根目录，例如: .cursor/rules/a.mdc）。如果为空，则使用默认路径 .cursor/rules/{agent_name}.mdc"
-                    }
+                        "description": ".mdc文件路径（相对于工作区根目录，例如: .cursor/rules/a.mdc）。如果为空，则使用默认路径 .cursor/rules/{agent_name}.mdc",
+                    },
                 },
-                "required": ["agent_name"]
-            }
+                "required": ["agent_name"],
+            },
         ),
         Tool(
             name="get_current_session",
             description="获取当前AI的会话信息",
-            inputSchema={
-                "type": "object",
-                "properties": {}
-            }
+            inputSchema={"type": "object", "properties": {}},
         ),
         Tool(
             name="list_agents",
             description="列出所有已注册的AI代理",
-            inputSchema={
-                "type": "object",
-                "properties": {}
-            }
+            inputSchema={"type": "object", "properties": {}},
         ),
         Tool(
             name="standby",
@@ -77,27 +72,24 @@ def get_system_tools():
                 "properties": {
                     "status_message": {
                         "type": "string",
-                        "description": "待命状态消息，用于说明当前状态"
+                        "description": "待命状态消息，用于说明当前状态",
                     },
                     "check_tasks": {
                         "type": "boolean",
                         "description": "是否检查任务，默认：true",
-                        "default": True
+                        "default": True,
                     },
                     "check_messages": {
                         "type": "boolean",
                         "description": "是否检查消息，默认：true",
-                        "default": True
+                        "default": True,
                     },
                     "auto_read": {
                         "type": "boolean",
                         "description": "是否自动读取新任务/消息内容，默认：true",
-                        "default": True
-                    }
-                }
-            }
-        )
+                        "default": True,
+                    },
+                },
+            },
+        ),
     ]
-
-
-

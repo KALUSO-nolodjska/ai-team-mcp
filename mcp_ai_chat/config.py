@@ -1,6 +1,7 @@
 """
 MCP AI Chat Group - 配置管理
 """
+
 from pathlib import Path
 
 # 数据存储目录
@@ -24,6 +25,3 @@ DEFAULT_MAX_CONTENT_LENGTH = 5000
 
 # 确保目录存在
 MESSAGES_DIR.mkdir(parents=True, exist_ok=True)
-
-
-
