@@ -10,6 +10,8 @@
 
 **Enterprise-grade framework for multi-AI agent collaboration**
 
+[English](README.md) | [中文文档](README_CN.md)
+
 [Features](#-features) • [Quick Start](#-quick-start) • [Documentation](#-documentation) • [Examples](#-usage-examples) • [Contributing](#-contributing)
 
 </div>
