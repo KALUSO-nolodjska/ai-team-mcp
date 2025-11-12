@@ -2,10 +2,9 @@
 
 <div align="center">
 
-English | [简体中文](README_CN.md)
-
+[![CI/CD](https://github.com/KALUSO-nolodjska/ai-team-mcp/actions/workflows/test.yml/badge.svg)](https://github.com/KALUSO-nolodjska/ai-team-mcp/actions/workflows/test.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![MCP Compatible](https://img.shields.io/badge/MCP-Compatible-green.svg)](https://modelcontextprotocol.io)
 [![Code Quality](https://img.shields.io/badge/code%20quality-enterprise-brightgreen.svg)]()
 
