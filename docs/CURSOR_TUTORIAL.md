@@ -61,8 +61,6 @@ alwaysApply: false
 - 如果多个规则同时生效,AI会混淆角色职责
 - 手动激活确保每次只扮演一个角色
 
-[图片占位符: cursor-rules-selection.png - 展示Cursor中选择Rules的界面]
-
 ---
 
 ## 🔧 配置MCP服务器
@@ -95,7 +93,6 @@ pip install mcp
 - `args`: MCP服务器入口模块
 - `cwd`: MCP服务器代码目录 (替换为您的实际路径)
 
-[图片占位符: mcp-config-location.png - 展示mcp.json文件位置]
 
 ### 第三步: 重启Cursor
 
@@ -111,7 +108,6 @@ pip install mcp
 
 如果看到注册成功消息,说明MCP服务器配置正确! 🎉
 
-[图片占位符: mcp-verification.png - 展示MCP工具调用成功的界面]
 
 ---
 
